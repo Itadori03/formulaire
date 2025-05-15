@@ -1,8 +1,9 @@
-name: Run Backend App
+name: Run Backend Every 5 Seconds
 
 on:
+  workflow_dispatch:  # Permet de lancer manuellement
   schedule:
-    - cron: "0 * * * *" # Exécute toutes les heures
+    - cron: "*/5 * * * *" # Exécute toutes les 5 secondes (⚠ GitHub Actions limite à 1 min)
 
 jobs:
   run-app:
