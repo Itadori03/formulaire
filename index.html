@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Utilisateurs</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <h1>Bienvenue</h1>
+    <p>Choisissez votre rôle :</p>
+    <button onclick="choisirRole('admin')">Administrateur</button>
+    <button onclick="choisirRole('utilisateur')">Utilisateur simple</button>
+
+    <!-- Section Utilisateur -->
+    <div id="userSection" style="display: none;">
+        <h2>Enregistrement des utilisateurs</h2>
+        <form id="userForm">
+            <label for="nom">Nom :</label>
+            <input type="text" id="nom" required>
+            <button type="submit">Sauvegarder</button>
+        </form>
+        <h2>Utilisateurs enregistrés</h2>
+        <ul id="userList"></ul>
+    </div>
+
+    <!-- Section Administrateur -->
+    <div id="adminSection" style="display: none;">
+        <h2>Espace Administrateur</h2>
+        <ul id="adminUserList"></ul>
+        <button onclick="retourAccueil()">Retour</button>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>
