@@ -22,12 +22,10 @@ document.getElementById("userForm").addEventListener("submit", async (event) => 
     
     const nom = document.getElementById("nom").value;
     
-    const response = await fetch(${SUPABASE_URL}/rest/v1/users_data, {
+    const response = await fetch("https://nom-du-projet.onrender.com/utilisateurs", {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
-            "apikey": SUPABASE_KEY,
-            "Authorization": Bearer ${SUPABASE_KEY}
+            "Content-Type": "application/json"
         },
         body: JSON.stringify({ nom })
     });
@@ -40,31 +38,17 @@ document.getElementById("userForm").addEventListener("submit", async (event) => 
 
 // 🔹 Afficher la liste des utilisateurs
 async function afficherUtilisateurs() {
-    const response = await fetch(${SUPABASE_URL}/rest/v1/users_data, {
-        headers: {
-            "apikey": SUPABASE_KEY,
-            "Authorization": Bearer ${SUPABASE_KEY}
-        }
-    });
-
+    const response = await fetch("https://nom-du-projet.onrender.com/utilisateurs");
     const utilisateurs = await response.json();
-    const userList = document.getElementById("userList");
-    const adminUserList = document.getElementById("adminUserList");
 
+    const userList = document.getElementById("userList");
     userList.innerHTML = utilisateurs.map(user => <li>${user.nom}</li>).join("");
-    adminUserList.innerHTML = utilisateurs.map(user =>
-        <li>${user.nom} <button onclick="supprimerUtilisateur('${user.id}')">Supprimer</button></li>
-    ).join("");
 }
 
 // 🔹 Supprimer un utilisateur (admin uniquement)
 async function supprimerUtilisateur(id) {
-    await fetch(${SUPABASE_URL}/rest/v1/users_data?id=eq.${id}, {
-        method: "DELETE",
-        headers: {
-            "apikey": SUPABASE_KEY,
-            "Authorization": Bearer ${SUPABASE_KEY}
-        }
+    await fetch(https://nom-du-projet.onrender.com/utilisateurs/${id}, {
+        method: "DELETE"
     });
 
     afficherUtilisateurs();
@@ -75,3 +59,6 @@ function retourAccueil() {
     document.getElementById("adminSection").style.display = "none";
     document.getElementById("userSection").style.display = "none";
 }
+
+// Appeler la fonction au chargement de la page
+afficherUtilisateurs();
