@@ -1,3 +1,22 @@
+const ADMIN_PASSWORD = "Donatien1";
+
+// 🔹 Choix du rôle
+function choisirRole(role) {
+    if (role === "admin") {
+        const password = prompt("Entrez le mot de passe administrateur :");
+        if (password === ADMIN_PASSWORD) {
+            document.getElementById("adminSection").style.display = "block";
+            afficherUtilisateurs();
+        } else {
+            alert("Mot de passe incorrect !");
+        }
+    } else {
+        document.getElementById("userSection").style.display = "block";
+        afficherUtilisateurs();
+    }
+}
+
+// 🔹 Enregistrer un utilisateur
 document.getElementById("userForm").addEventListener("submit", async (event) => {
     event.preventDefault();
     
@@ -7,7 +26,7 @@ document.getElementById("userForm").addEventListener("submit", async (event) => 
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "apikey": eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ1anhhYWRpeHpubml1aXByc210Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDczMzU3MDIsImV4cCI6MjA2MjkxMTcwMn0.nscE_gkfSG8Mog2yLuDy0v1aCuFYK7DmTL3aHmVarH8,
+            "apikey": SUPABASE_KEY,
             "Authorization": Bearer ${SUPABASE_KEY}
         },
         body: JSON.stringify({ nom })
@@ -19,17 +38,40 @@ document.getElementById("userForm").addEventListener("submit", async (event) => 
     }
 });
 
+// 🔹 Afficher la liste des utilisateurs
 async function afficherUtilisateurs() {
     const response = await fetch(${SUPABASE_URL}/rest/v1/users_data, {
         headers: {
-            "apikey": eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ1anhhYWRpeHpubml1aXByc210Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDczMzU3MDIsImV4cCI6MjA2MjkxMTcwMn0.nscE_gkfSG8Mog2yLuDy0v1aCuFYK7DmTL3aHmVarH8,
+            "apikey": SUPABASE_KEY,
             "Authorization": Bearer ${SUPABASE_KEY}
         }
     });
 
     const utilisateurs = await response.json();
     const userList = document.getElementById("userList");
+    const adminUserList = document.getElementById("adminUserList");
+
     userList.innerHTML = utilisateurs.map(user => <li>${user.nom}</li>).join("");
+    adminUserList.innerHTML = utilisateurs.map(user =>
+        <li>${user.nom} <button onclick="supprimerUtilisateur('${user.id}')">Supprimer</button></li>
+    ).join("");
 }
 
-afficherUtilisateurs();
+// 🔹 Supprimer un utilisateur (admin uniquement)
+async function supprimerUtilisateur(id) {
+    await fetch(${SUPABASE_URL}/rest/v1/users_data?id=eq.${id}, {
+        method: "DELETE",
+        headers: {
+            "apikey": SUPABASE_KEY,
+            "Authorization": Bearer ${SUPABASE_KEY}
+        }
+    });
+
+    afficherUtilisateurs();
+}
+
+// 🔹 Retour à la sélection de rôle
+function retourAccueil() {
+    document.getElementById("adminSection").style.display = "none";
+    document.getElementById("userSection").style.display = "none";
+}
