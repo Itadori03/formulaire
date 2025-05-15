@@ -38,7 +38,7 @@ document.getElementById("userForm").addEventListener("submit", async (event) => 
 
 // 🔹 Afficher la liste des utilisateurs
 async function afficherUtilisateurs() {
-    const response = await fetch("https://nom-du-projet.onrender.com/utilisateurs");
+    const response = await fetch("https://formulaire-oews.onrender.com");
     const utilisateurs = await response.json();
 
     const userList = document.getElementById("userList");
